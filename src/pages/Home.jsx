@@ -616,6 +616,67 @@ function Home() {
         <span className="text-xl">💬</span>
         <span className="font-semibold hidden sm:inline">Liên hệ Zalo</span>
       </a>
+
+      {/* Footer */}
+<footer className="bg-gray-900 text-gray-200 mt-12">
+  <div className="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
+    
+    {/* Thông tin cửa hàng */}
+    <div>
+      <h3 className="text-xl font-bold text-white mb-3">
+        🏪 KIM KHÍ QUANG HƯƠNG
+      </h3>
+      <p className="text-sm leading-relaxed text-gray-400">
+        Chúng tôi chuyên phân phối các mặt hàng về lĩnh vực:
+        <br />
+        <span className="text-gray-300">
+          Vật Tư Kim Khí Tổng Hợp - Thiết Bị Điện - Thiết Bị Vệ Sinh -
+          Thiết Bị Vật Tư Ngành Nước [...]
+        </span>
+      </p>
+    </div>
+
+    {/* Địa chỉ */}
+    <div>
+      <h3 className="text-lg font-semibold text-white mb-3">📍 Địa chỉ</h3>
+      <p className="text-gray-400 text-sm">
+        123 Đường ABC, Phường XYZ
+        <br />
+        Quận/Huyện ...
+        <br />
+        Tỉnh/Thành phố ...
+      </p>
+    </div>
+
+    {/* Liên hệ */}
+    <div>
+      <h3 className="text-lg font-semibold text-white mb-3">📞 Liên hệ</h3>
+      <p className="text-gray-400 text-sm mb-2">
+        Hotline:{" "}
+        <a
+          href="tel:0775274542"
+          className="text-orange-400 hover:text-orange-300 font-semibold"
+        >
+          0775 274 542
+        </a>
+      </p>
+
+      <a
+        href="https://zalo.me/0775274542"
+        target="_blank"
+        rel="noreferrer"
+        className="inline-block mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+      >
+        💬 Chat Zalo
+      </a>
+    </div>
+  </div>
+
+  {/* Bottom */}
+  <div className="border-t border-gray-800 text-center text-sm text-gray-500 py-4">
+    © {new Date().getFullYear()} Kim Khí Quang Hương - All Rights Reserved
+  </div>
+</footer>
     </div>
   );
 }
