@@ -160,7 +160,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-600 to-orange-500 text-white shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -246,7 +246,7 @@ function Home() {
       </section>
 
       {/* Main */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-6 flex-1">
         {/* Categories */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
