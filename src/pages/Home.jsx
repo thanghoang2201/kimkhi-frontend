@@ -173,7 +173,7 @@ function Home() {
               }}
             >
               <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md">
-                <span className="text-orange-600 text-2xl">🔩</span>
+                <span className="text-orange-600 text-2xl">🏪</span>
               </div>
               <div>
                 <h1 className="text-xl font-bold">KIM KHÍ QUANG HƯƠNG</h1>
