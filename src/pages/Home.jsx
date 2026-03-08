@@ -176,7 +176,7 @@ function Home() {
                 <span className="text-orange-600 text-2xl">🔩</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold">KIM KHÍ THÀNH PHÁT</h1>
+                <h1 className="text-xl font-bold">KIM KHÍ QUANG HƯƠNG</h1>
                 <p className="text-xs text-orange-100">Vật liệu xây dựng chất lượng</p>
               </div>
             </div>
