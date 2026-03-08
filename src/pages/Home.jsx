@@ -14,29 +14,34 @@ function Home() {
   const [showCart, setShowCart] = useState(false);
 
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
-    const [customerNote, setCustomerNote] = useState("");
+  const [customerNote, setCustomerNote] = useState("");
+
+  // Thay số này bằng số Zalo thật của bạn
+  const zaloPhone = "0775274542";
 
   useEffect(() => {
-  const loadData = async () => {
-    try {
-      const [categoryData, productData] = await Promise.all([
-        getAllCategories(),
-        getAllProducts(),
-      ]);
+    const loadData = async () => {
+      try {
+        const [categoryData, productData] = await Promise.all([
+          getAllCategories(),
+          getAllProducts(),
+        ]);
 
-      setCategories(categoryData.filter((item) => item.trangThai !== false));
-      setProducts(productData.filter((item) => item.trangThai !== false));
-    } catch (error) {
-      console.error("Lỗi load dữ liệu:", error);
-      alert("Không tải được dữ liệu backend");
-    }
-  };
+        setCategories(categoryData.filter((item) => item.trangThai !== false));
+        setProducts(productData.filter((item) => item.trangThai !== false));
+      } catch (error) {
+        console.error("Lỗi load dữ liệu:", error);
+        alert("Không tải được dữ liệu backend");
+      }
+    };
 
-  loadData();
-}, []);
+    loadData();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -91,6 +96,11 @@ function Home() {
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const totalMoney = cart.reduce(
+    (sum, item) => sum + Number(item.gia) * item.quantity,
+    0
+  );
+
   const handleCreateOrder = async () => {
     try {
       if (!customerPhone.trim() || !customerAddress.trim()) {
@@ -108,26 +118,46 @@ function Home() {
         })),
       };
 
+      // 1. Tạo đơn hàng ở backend
       await createOrder(payload);
 
-      alert("Đặt hàng thành công!");
+      // 2. Tạo nội dung đơn hàng để copy
+      let orderText = `📦 ĐƠN HÀNG MỚI\n`;
+      orderText += `============================\n`;
+      orderText += `👤 Khách hàng: ${customerName || "Không có"}\n`;
+      orderText += `📞 Số điện thoại: ${customerPhone}\n`;
+      orderText += `📍 Địa chỉ: ${customerAddress}\n`;
+      orderText += `📝 Ghi chú: ${customerNote || "Không có"}\n`;
+      orderText += `----------------------------\n`;
 
-      setCart([]);
+      cart.forEach((item, index) => {
+        orderText += `${index + 1}. ${item.tenSanPham}\n`;
+        orderText += `   - Số lượng: ${item.quantity}\n`;
+        orderText += `   - Đơn giá: ${formatPrice(item.gia)}\n`;
+        orderText += `   - Thành tiền: ${formatPrice(Number(item.gia) * item.quantity)}\n`;
+      });
+
+      orderText += `----------------------------\n`;
+      orderText += `💰 Tổng tiền: ${formatPrice(totalMoney)}\n`;
+
+      // 3. Copy vào clipboard
+      await navigator.clipboard.writeText(orderText);
+
+      // 4. Đóng checkout, mở modal thành công
       setShowCheckout(false);
+      setShowSuccessModal(true);
+
+      // 5. Reset form + giỏ hàng
+      setCart([]);
       setCustomerName("");
       setCustomerPhone("");
       setCustomerAddress("");
       setCustomerNote("");
     } catch (error) {
       console.error("Lỗi đặt hàng:", error);
-      alert("Đặt hàng thất bại");
+      alert("Đặt hàng thất bại hoặc không copy được đơn hàng");
     }
   };
-
-  const totalMoney = cart.reduce(
-    (sum, item) => sum + Number(item.gia) * item.quantity,
-    0
-  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -530,6 +560,62 @@ function Home() {
           </div>
         </div>
       )}
+
+      {/* Success modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50">
+          <div
+            className="modal-overlay absolute inset-0"
+            onClick={() => setShowSuccessModal(false)}
+          ></div>
+
+          <div className="absolute inset-4 md:inset-y-20 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in flex flex-col">
+            <div className="flex-1 p-8 text-center">
+              <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-5xl">✅</span>
+              </div>
+
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                Đặt hàng thành công
+              </h2>
+
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Đơn hàng đã được copy, vui lòng ấn vào Zalo ở dưới để gửi đơn hàng tới cửa hàng.
+              </p>
+
+              <a
+                href={`https://zalo.me/${zaloPhone}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all shadow-lg hover:shadow-xl"
+              >
+                <span className="text-2xl">💬</span>
+                Gửi qua Zalo
+              </a>
+            </div>
+
+            <div className="border-t bg-gray-50 p-4">
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-xl font-medium transition-all"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Nút Zalo nổi */}
+      <a
+        href={`https://zalo.me/${zaloPhone}`}
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-6 right-6 z-40 bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-full shadow-xl flex items-center gap-2 transition-all"
+      >
+        <span className="text-xl">💬</span>
+        <span className="font-semibold hidden sm:inline">Liên hệ Zalo</span>
+      </a>
     </div>
   );
 }
