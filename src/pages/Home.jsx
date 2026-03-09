@@ -640,11 +640,11 @@ function Home() {
     <div>
       <h3 className="text-lg font-semibold text-white mb-3">📍 Địa chỉ</h3>
       <p className="text-gray-400 text-sm">
-        123 Đường ABC, Phường XYZ
+        TDP KIỀN BÁI 2
         <br />
-        Quận/Huyện ...
+        Phường Lê Hồng Phong - Thủy Nguyên
         <br />
-        Tỉnh/Thành phố ...
+        Hải Phòng
       </p>
     </div>
 
