@@ -374,7 +374,7 @@ ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
         <div className="p-6 border-b border-slate-700 flex items-center justify-between">
   <div>
     <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-      🏪 Admin Panel
+      🏪 Hoàng Thắng
     </h1>
     <p className="text-slate-400 text-sm mt-1">Quản lý cửa hàng</p>
   </div>
